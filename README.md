@@ -72,6 +72,22 @@ python main.py
 ```
 *(Note: This assumes the virtual environment is activated. If not, use `python3 .venv/bin/python main.py`)*
 
+## Running with Docker Compose
+
+For a containerized setup, you can use Docker Compose.
+
+1.  **Ensure Docker is running** on your system.
+2.  **Ensure your local LLM is running** and accessible at `http://192.168.1.14:1234/v1`.
+3.  **Build and run the services:**
+    ```bash
+    docker-compose up --build
+    ```
+    This will build the Docker image for the application and start the container. The ChromaDB data will be persisted in a Docker volume named `chroma_data`.
+4.  **To stop the services:**
+    ```bash
+    docker-compose down
+    ```
+
 ## Architecture and Communication
 
 Refer to `SPECIFICATION.md` for a detailed overview of the system's architecture, agent roles, and communication flows.

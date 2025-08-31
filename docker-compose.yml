@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    container_name: crewai_personal_assistant_app
+    volumes:
+      - .:/app # Mount the current directory into the container for development
+      - chroma_data:/app/chroma_db # Mount a named volume for ChromaDB persistence
+    environment:
+      # Set the local LLM endpoint. This assumes the LLM is accessible from within the Docker network.
+      # If your LM Studio is running on the host machine, you might need to use host.docker.internal
+      # or the host's IP address if host.docker.internal is not supported or you're not on Docker Desktop.
+      # For now, we'll use the provided IP.
+      OPENAI_API_KEY: "sk-no-key-required" # As configured in main.py
+      # LLM_BASE_URL: "http://host.docker.internal:1234/v1" # Example for Docker Desktop
+      LLM_BASE_URL: "http://192.168.1.14:1234/v1" # Explicit IP for local LLM
+    command: python main.py # Override CMD in Dockerfile for compose
+
+volumes:
+  chroma_data: # Named volume for ChromaDB persistence
