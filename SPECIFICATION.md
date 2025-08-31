@@ -76,16 +76,48 @@ The following diagram illustrates the high-level communication paths and data fl
 
 ```mermaid
 graph TD
-    A[Start Crew] --> B{Next Task Available?}
-    B -- Yes --> C[Assign Task to Agent]
-    C --> D[Agent Executes Task]
-    D --> E{Task Successful?}
-    E -- Yes --> B
-    E -- No --> F[Handle Task Failure]
-    F --> G[End Crew (with Failure)]
-    B -- No --> H[All Tasks Completed]
-    H --> I[End Crew (Success)]
+    User --> Planner;
+    User --> DeepResearch;
+    User --> Tutor;
+    User --> FinancialAdvisor;
+    User --> HealthWellnessCoach;
+
+    DeepResearch -- Research Findings --> Tutor;
+    DeepResearch -- Research Findings --> FinancialAdvisor;
+    DeepResearch -- Research Findings --> MemoryAgent;
+
+    Tutor -- Explanations --> Planner;
+    Tutor -- Explanations --> MemoryAgent;
+    Tutor -- Queries --> MemoryAgent;
+
+    FinancialAdvisor -- Financial Advice --> Planner;
+    FinancialAdvisor -- Financial Advice --> MemoryAgent;
+
+    HealthWellnessCoach -- Health Plan --> Planner;
+    HealthWellnessCoach -- Health Plan --> MemoryAgent;
+
+    Planner -- Schedule --> User;
+    Planner -- Schedule --> MemoryAgent;
+
+    MemoryAgent -- Retrieved Memories --> DeepResearch;
+    MemoryAgent -- Retrieved Memories --> Tutor;
+    MemoryAgent -- Retrieved Memories --> Retrieved Memories --> FinancialAdvisor;
+    MemoryAgent -- Retrieved Memories --> HealthWellnessCoach;
+    MemoryAgent -- Retrieved Memories --> Planner;
 ```
+
+### 4.2. Initial Request Handling and Dynamic Task Routing
+
+When a user formulates a request, the CrewAI framework, specifically the `Crew` object orchestrated by `main.py`, acts as the intelligent coordinator. There isn't a separate "Coordinator Agent" as a distinct agent instance. Instead, the underlying Large Language Model (LLM) powering the Crew's decision-making performs the crucial routing and task formulation.
+
+1.  **LLM-Powered Initial Routing:** Upon receiving a user's natural language request (e.g., via `crew.kickoff()`), the Crew's internal LLM analyzes the request. It leverages its understanding of the `roles`, `goals`, and `backstories` of all available agents, as well as the `descriptions` of the pre-defined tasks. Based on this semantic understanding, the LLM determines which agent is best suited to handle the initial part of the request and which specific task should be assigned to that agent to kickstart the workflow. This is a dynamic, intelligent routing process, not a simple keyword match.
+
+2.  **Sequential Task Execution with Contextual Awareness:** Once the first task is assigned and executed by an agent, its output becomes available. The Crew then proceeds through the pre-defined sequence of tasks (as laid out in `main.py`). For each subsequent task, the LLM continues to guide the process. It ensures that the output from previous tasks is passed as `context` to the relevant downstream tasks. This allows agents to build upon each other's work and maintain a coherent understanding of the overall objective. Agents don't "pull" tasks from a general queue; rather, the Crew's orchestrating LLM pushes tasks to them based on the defined flow and the evolving context.
+
+3.  **Inter-Agent Communication Mechanisms:**
+    *   **Task Outputs as Context:** This is the primary mechanism. The result of one agent's completed task is directly injected into the input or description of a subsequent task, allowing the receiving agent to leverage that information.
+    *   **Shared Goals and Roles:** Agents implicitly communicate through their shared understanding of the overall mission and their specialized roles. This helps them anticipate what kind of information might be needed or produced by other agents.
+    *   **Tool Usage:** Agents can use tools (like the `store_memory` and `retrieve_memory` tools of the Memory Agent) to interact with shared resources or to explicitly request information that another agent's tool might provide. The LLM decides when and how to use these tools based on the task at hand.
 
 ## 5. Communication Flow Examples
 
