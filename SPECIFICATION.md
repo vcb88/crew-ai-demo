@@ -192,7 +192,7 @@ graph TD
     D --> E{Task Successful?}
     E -- Yes --> B
     E -- No --> F[Handle Task Failure]
-    F --> G[End Crew (with Failure)]
+    F --> G[End Crew - Failure]
     B -- No --> H[All Tasks Completed]
     H --> I[End Crew (Success)]
 ```
