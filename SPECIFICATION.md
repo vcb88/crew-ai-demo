@@ -76,34 +76,15 @@ The following diagram illustrates the high-level communication paths and data fl
 
 ```mermaid
 graph TD
-    User --> Planner;
-    User --> DeepResearch;
-    User --> Tutor;
-    User --> FinancialAdvisor;
-    User --> HealthWellnessCoach;
-
-    DeepResearch -- Research Findings --> Tutor;
-    DeepResearch -- Research Findings --> FinancialAdvisor;
-    DeepResearch -- Research Findings --> MemoryAgent;
-
-    Tutor -- Explanations --> Planner;
-    Tutor -- Explanations --> MemoryAgent;
-    Tutor -- Queries --> MemoryAgent;
-
-    FinancialAdvisor -- Financial Advice --> Planner;
-    FinancialAdvisor -- Financial Advice --> MemoryAgent;
-
-    HealthWellnessCoach -- Health Plan --> Planner;
-    HealthWellnessCoach -- Health Plan --> MemoryAgent;
-
-    Planner -- Schedule --> User;
-    Planner -- Schedule --> MemoryAgent;
-
-    MemoryAgent -- Retrieved Memories --> DeepResearch;
-    MemoryAgent -- Retrieved Memories --> Tutor;
-    MemoryAgent -- Retrieved Memories --> FinancialAdvisor;
-    MemoryAgent -- Retrieved Memories --> HealthWellnessCoach;
-    MemoryAgent -- Retrieved Memories --> Planner;
+    A[Start Crew] --> B{Next Task Available?}
+    B -- Yes --> C[Assign Task to Agent]
+    C --> D[Agent Executes Task]
+    D --> E{Task Successful?}
+    E -- Yes --> B
+    E -- No --> F[Handle Task Failure]
+    F --> G[End Crew (with Failure)]
+    B -- No --> H[All Tasks Completed]
+    H --> I[End Crew (Success)]
 ```
 
 ## 5. Communication Flow Examples
@@ -178,16 +159,16 @@ A conceptual state diagram for an individual agent processing a task:
 
 ```mermaid
 graph TD
-    A[Idle] --> B{Task Assigned};
-    B --> C[Processing Task];
-    C --> D{Requires External Tool/LLM?};
-    D -- Yes --> E[Executing Tool/LLM];
-    E --> C;
-    D -- No --> F[Generating Output];
-    F --> G[Task Completed];
-    G --> A;
-    C --> H[Error/Failure] --> A;
-    E --> H;
+    A[Idle] --> B{Task Assigned}
+    B --> C[Processing Task]
+    C --> D{Requires External Tool/LLM?}
+    D -- Yes --> E[Executing Tool/LLM]
+    E --> C
+    D -- No --> F[Generating Output]
+    F --> G[Task Completed]
+    G --> A
+    C --> H[Error/Failure] --> A
+    E --> H
 ```
 
 *   **Idle:** Agent is waiting for a task.
