@@ -1,1 +1,2 @@
 crewai
+langchain-openai
