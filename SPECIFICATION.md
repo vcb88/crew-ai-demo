@@ -192,9 +192,9 @@ graph TD
     D --> E{Task Successful?}
     E -- Yes --> B
     E -- No --> F[Handle Task Failure]
-    F --> G[End Crew - Failure]
+    F --> G[End Crew Failure]
     B -- No --> H[All Tasks Completed]
-    H --> I[End Crew (Success)]
+    H --> I[End Crew Success]
 ```
 
 *   **Start Crew:** The CrewAI system is initialized and begins execution.
