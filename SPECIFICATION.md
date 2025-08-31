@@ -53,6 +53,14 @@ Based on the selected agents, the system will provide the following core functio
     *   Provide motivational support and track progress.
     *   Communicate health and wellness plans and recommendations.
 
+### 3.6. Memory Agent
+*   **Role:** Efficiently stores and retrieves relevant information to provide context and enable long-term learning for the personal assistant system.
+*   **Responsibilities:**
+    *   Store textual information and associated metadata in a vector database.
+    *   Retrieve semantically similar information based on queries.
+    *   Provide retrieved memories as context to other agents.
+    *   Ensure data persistence and efficient retrieval for long-term knowledge retention.
+
 ## 4. Architecture Overview (High-Level)
 
 The Personal AI Assistant system will be built upon the CrewAI framework, leveraging a multi-agent architecture. Each agent operates semi-autonomously with a defined role, goal, and backstory, but critically, they communicate and collaborate to achieve complex user requests.
@@ -68,15 +76,28 @@ The Personal AI Assistant system will be built upon the CrewAI framework, levera
 1.  **User Request:** "I want to start investing in AI stocks. Help me understand it, see if I can afford it, and schedule time to learn."
 2.  **Deep Research Agent:** Receives a task to research "overview of AI stocks and their potential."
     *   *Output:* Comprehensive research report on AI stocks.
-3.  **Tutor Agent:** Receives a task to "explain the basics of stock investment and how to interpret AI stock research."
+3.  **Memory Agent (Store):** Receives the research report from Deep Research Agent and stores it in the vector database for future reference.
+    *   *Input:* Research report from Deep Research Agent.
+    *   *Output:* Confirmation of memory storage.
+4.  **Tutor Agent:** Receives a task to "explain the basics of stock investment and how to interpret AI stock research."
     *   *Input:* Output from Deep Research Agent.
+    *   *Memory Retrieval (Optional):* Queries Memory Agent for past explanations on "stock investment basics" to enrich its context.
     *   *Output:* Simplified explanation of stock investment and AI stock research.
-4.  **Financial Advisor Agent:** Receives a task to "assess user's current budget for a new investment in AI stocks."
+5.  **Memory Agent (Store):** Receives the explanation from Tutor Agent and stores it in the vector database.
+    *   *Input:* Explanation from Tutor Agent.
+    *   *Output:* Confirmation of memory storage.
+6.  **Financial Advisor Agent:** Receives a task to "assess user's current budget for a new investment in AI stocks."
     *   *Input:* Output from Deep Research Agent (for context on AI stocks) and potentially user's financial data (simulated).
     *   *Output:* Financial assessment and advice on affordability.
-5.  **Planner Agent:** Receives a task to "schedule dedicated time for the user to learn about AI stock investment and review financial advice."
+7.  **Memory Agent (Store):** Receives the financial advice from Financial Advisor Agent and stores it in the vector database.
+    *   *Input:* Financial advice from Financial Advisor Agent.
+    *   *Output:* Confirmation of memory storage.
+8.  **Planner Agent:** Receives a task to "schedule dedicated time for the user to learn about AI stock investment and review financial advice."
     *   *Input:* Output from Tutor Agent (learning content) and Financial Advisor Agent (advice).
     *   *Output:* Proposed schedule for learning and review sessions.
+9.  **Memory Agent (Store):** Receives the generated schedule from Planner Agent and stores it in the vector database.
+    *   *Input:* Schedule from Planner Agent.
+    *   *Output:* Confirmation of memory storage.
 
 ### Example 2: Healthy Lifestyle Integration
 1.  **User Request:** "I want to start a healthier lifestyle. Can you suggest a plan and help me fit it into my week?"
@@ -88,8 +109,16 @@ The Personal AI Assistant system will be built upon the CrewAI framework, levera
 
 ## 6. Tools and Dependencies
 *   **Core Framework:** CrewAI
-*   **Python Libraries:** (as specified in `requirements.txt`, e.g., `crewai`, `openai` for LLM integration)
-*   **LLM Provider:** An external Large Language Model (e.g., OpenAI GPT models, Google Gemini) will be required for agents to perform their reasoning and task execution. API keys will need to be configured.
+*   **Python Libraries:** (as specified in `requirements.txt`, e.g., `crewai`, `langchain-openai`, `chromadb`)
+*   **LLM Provider:** A Large Language Model (LLM) is required for agents to perform their reasoning and task execution. This project is configured to use a local LLM accessible via an OpenAI-compatible API endpoint (e.g., LM Studio, Ollama).
+    *   **Local LLM Endpoint:** `http://192.168.1.14:1234/v1`
+    *   **API Key:** `sk-no-key-required` (for local LLMs)
+*   **Vector Database (for Memory Agent):** ChromaDB (local persistent client)
+    *   **Purpose:** Stores and retrieves vector embeddings of memories for long-term retention and semantic search.
+    *   **Storage Location:** `./chroma_db` directory within the project.
+*   **Embedding Model:** An embedding model is used by the Memory Agent to convert text into numerical vectors for storage and retrieval in the vector database.
+    *   **Current Implementation:** Uses a mock embedding function for demonstration.
+    *   **Production Recommendation:** For real-world use, a robust embedding model (e.g., OpenAI's `text-embedding-ada-002`, Sentence Transformers models) should be integrated.
 *   **Potential Future Tools (for enhanced functionality):**
     *   Calendar API (for Planner)
     *   Search API (for Deep Research)

@@ -9,9 +9,11 @@ crew-ai/
 ├── .venv/                # Python virtual environment
 ├── agents.py             # Defines the roles, goals, and backstories of all AI agents
 ├── main.py               # Main script to orchestrate the CrewAI agents and tasks
+├── memory_tools.py       # Custom tools for the Memory Agent (ChromaDB integration)
 ├── requirements.txt      # Lists Python dependencies (e.g., crewai)
 ├── SPECIFICATION.md      # Detailed product vision, architecture, and communication flows
 ├── tasks.py              # Defines the specific tasks that agents can perform
+├── chroma_db/            # Persistent storage for ChromaDB (vector database)
 └── .env                  # (Optional) Environment variables, e.g., OPENAI_API_KEY
 ```
 
@@ -45,15 +47,20 @@ crew-ai/
     pip install -r requirements.txt
     ```
 
-5.  **Configure API Key:**
-    This project requires an OpenAI API key for the agents to function.
-    *   Obtain your API key from [platform.openai.com](https://platform.openai.com/).
+5.  **Configure LLM and API Key:**
+    This project is configured to use a local LLM (Large Language Model) accessible via an OpenAI-compatible API endpoint (e.g., LM Studio, Ollama).
+    *   Ensure your local LLM is running and accessible at `http://192.168.1.14:1234/v1`.
     *   Create a file named `.env` in the `crew-ai/` directory.
-    *   Add your API key to the `.env` file in the following format:
+    *   Add the following line to the `.env` file:
         ```
-        OPENAI_API_KEY='your_api_key_here'
+        OPENAI_API_KEY='sk-no-key-required'
         ```
-        Replace `'your_api_key_here'` with your actual OpenAI API key.
+        (Note: For local LLMs, `sk-no-key-required` is a common placeholder and usually sufficient.)
+
+6.  **ChromaDB Setup (for Memory Agent):**
+    The Memory Agent uses ChromaDB as a local vector database.
+    *   Upon first run, a `chroma_db/` directory will be created in the project root to store the database.
+    *   The current implementation uses a **mock embedding function** for demonstration purposes. For real-world applications, you would replace this with a robust embedding model (e.g., from OpenAI, Sentence Transformers) to enable meaningful semantic search.
 
 ## How to Run
 
