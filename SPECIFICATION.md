@@ -70,6 +70,42 @@ The Personal AI Assistant system will be built upon the CrewAI framework, levera
 *   **Task Modules:** Specific tasks that agents can perform will be defined in `tasks.py`.
 *   **Communication Channels:** Agents will communicate by passing the output of one task as context to another task, enabling a sequential and collaborative workflow.
 
+### 4.1. Agent Interaction Diagram
+
+The following diagram illustrates the high-level communication paths and data flow between the different agents in the system.
+
+```mermaid
+graph TD
+    User --> Planner;
+    User --> DeepResearch;
+    User --> Tutor;
+    User --> FinancialAdvisor;
+    User --> HealthWellnessCoach;
+
+    DeepResearch -- Research Findings --> Tutor;
+    DeepResearch -- Research Findings --> FinancialAdvisor;
+    DeepResearch -- Research Findings --> MemoryAgent;
+
+    Tutor -- Explanations --> Planner;
+    Tutor -- Explanations --> MemoryAgent;
+    Tutor -- Queries --> MemoryAgent;
+
+    FinancialAdvisor -- Financial Advice --> Planner;
+    FinancialAdvisor -- Financial Advice --> MemoryAgent;
+
+    HealthWellnessCoach -- Health Plan --> Planner;
+    HealthWellnessCoach -- Health Plan --> MemoryAgent;
+
+    Planner -- Schedule --> User;
+    Planner -- Schedule --> MemoryAgent;
+
+    MemoryAgent -- Retrieved Memories --> DeepResearch;
+    MemoryAgent -- Retrieved Memories --> Tutor;
+    MemoryAgent -- Retrieved Memories --> FinancialAdvisor;
+    MemoryAgent -- Retrieved Memories --> HealthWellnessCoach;
+    MemoryAgent -- Retrieved Memories --> Planner;
+```
+
 ## 5. Communication Flow Examples
 
 ### Example 1: Investment Planning

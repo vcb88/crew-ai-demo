@@ -1,6 +1,7 @@
 # Personal AI Assistant CrewAI Project
 
-This project implements a multi-agent personal AI assistant using the CrewAI framework. The system is designed to demonstrate collaborative intelligence among specialized AI agents to assist users with various aspects of their daily lives, including scheduling, learning, financial planning, and health & wellness.
+## Overview
+This project implements a sophisticated multi-agent personal AI assistant leveraging the CrewAI framework. It showcases how specialized AI agents can collaboratively work towards complex user goals, enhancing productivity, well-being, and knowledge acquisition. The system is designed with a hybrid memory architecture, combining short-term conversational context with a long-term vector database for persistent learning and recall.
 
 ## Project Structure
 
