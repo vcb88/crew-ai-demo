@@ -155,7 +155,7 @@ if __name__ == "__main__":
             store_schedule_memory_task
         ],
         verbose=True,
-        llm="local-model" # Use the model name recognized by litellm
+        llm="meta-llama-3-8b-instruct" # Use the model name recognized by litellm
     )
 
     # Kick off the crew's work
