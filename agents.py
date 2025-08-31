@@ -7,7 +7,8 @@ planner_agent = Agent(
     goal="""Create efficient and personalized daily, weekly, and monthly schedules for the user, integrating all tasks and appointments.""",
     backstory="""You are an expert in time management and organization, meticulously planning every detail to optimize the user's productivity and well-being.""",
     verbose=True,
-    allow_delegation=False
+    allow_delegation=False,
+    max_retries=3
 )
 
 deep_research_agent = Agent(
@@ -16,7 +17,8 @@ deep_research_agent = Agent(
 
     backstory="""You are a relentless seeker of knowledge, capable of diving deep into vast amounts of data to extract precise and relevant insights.""",
     verbose=True,
-    allow_delegation=False
+    allow_delegation=False,
+    max_retries=3
 )
 
 tutor_agent = Agent(
@@ -25,7 +27,8 @@ tutor_agent = Agent(
 
     backstory="""You are a patient and knowledgeable educator, passionate about simplifying intricate subjects and fostering a deeper understanding.""",
     verbose=True,
-    allow_delegation=False
+    allow_delegation=False,
+    max_retries=3
 )
 
 financial_advisor_agent = Agent(
@@ -34,7 +37,8 @@ financial_advisor_agent = Agent(
 
     backstory="""You are a seasoned financial expert, dedicated to helping the user achieve their financial goals through prudent planning and insightful recommendations.""",
     verbose=True,
-    allow_delegation=False
+    allow_delegation=False,
+    max_retries=3
 )
 
 health_wellness_coach_agent = Agent(
@@ -42,7 +46,8 @@ health_wellness_coach_agent = Agent(
     goal="""Guide the user towards a healthier lifestyle by suggesting personalized fitness routines, meal plans, and mindfulness practices.""",
     backstory="""You are a compassionate and motivating coach, committed to enhancing the user's physical and mental well-being through holistic approaches.""",
     verbose=True,
-    allow_delegation=False
+    allow_delegation=False,
+    max_retries=3
 )
 
 # New Memory Agent
@@ -52,5 +57,6 @@ memory_agent = Agent(
     backstory="""You are the central memory unit of the personal assistant, meticulously indexing and retrieving information to ensure seamless continuity and enhanced intelligence across all interactions.""",
     verbose=True,
     allow_delegation=False,
+    max_retries=3, # Added retry mechanism
     tools=[] # Tools will be added in main.py
 )
