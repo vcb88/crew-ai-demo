@@ -92,4 +92,8 @@ For a containerized setup, you can use Docker Compose.
 
 Refer to `SPECIFICATION.md` for a detailed overview of the system's architecture, agent roles, and communication flows.
 
+## Roadmap
+
+See `ROADMAP.md` for a detailed roadmap of future features, including effort and impact estimations.
+
 ---
