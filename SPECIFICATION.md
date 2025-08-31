@@ -46,7 +46,7 @@ Based on the selected agents, the system will provide the following core functio
     *   Communicate financial assessments and advice.
 
 ### 3.5. Health & Wellness Coach Agent
-*   **Role:** Guides the user towards a healthier lifestyle.
+*   **Role:** Guides the user towards a healthier lifestyle by suggesting personalized fitness routines, meal plans, and mindfulness practices.
 *   **Responsibilities:**
     *   Receive health-related goals or data from the user.
     *   Suggest personalized fitness routines, meal plans, and mindfulness practices.
@@ -95,3 +95,68 @@ The Personal AI Assistant system will be built upon the CrewAI framework, levera
     *   Search API (for Deep Research)
     *   Financial Data API (for Financial Advisor)
     *   Health Tracking API (for Health & Wellness Coach)
+
+## 7. Agent Communication Schema
+
+Agents within this system communicate primarily through the structured passing of information via **Task Outputs** and **Task Context**. This ensures a clear, traceable, and asynchronous flow of data and instructions between specialized agents.
+
+*   **Task Outputs:** When an agent completes a task, its output (e.g., a research report, a financial analysis, a generated schedule) becomes available. This output is typically a well-defined string or a structured data format (e.g., JSON) that can be consumed by other agents.
+*   **Task Context:** Subsequent tasks can explicitly declare dependencies on the outputs of previous tasks. The CrewAI framework facilitates this by allowing the output of one task to be injected as `context` into the `description` or `expected_output` of a following task. This mechanism enables agents to build upon each other's work.
+*   **Implicit Communication (Shared Goals/Roles):** While not direct message passing, agents also implicitly communicate through their shared understanding of the overall crew's goal and their individual roles. This allows them to anticipate needs and contribute relevant information even without explicit requests.
+*   **Future Enhancements (Direct Messaging/Shared Memory):** For more complex scenarios, direct agent-to-agent messaging or a shared, persistent memory module could be integrated, allowing for more dynamic and less sequential interactions.
+
+## 8. Conceptual State Diagrams
+
+### 8.1. Agent Lifecycle within a Task
+
+A conceptual state diagram for an individual agent processing a task:
+
+```mermaid
+graph TD
+    A[Idle] --> B{Task Assigned};
+    B --> C[Processing Task];
+    C --> D{Requires External Tool/LLM?};
+    D -- Yes --> E[Executing Tool/LLM];
+    E --> C;
+    D -- No --> F[Generating Output];
+    F --> G[Task Completed];
+    G --> A;
+    C --> H[Error/Failure] --> A;
+    E --> H;
+```
+
+*   **Idle:** Agent is waiting for a task.
+*   **Task Assigned:** Agent receives a new task.
+*   **Processing Task:** Agent is actively working on the task, reasoning, and planning.
+*   **Requires External Tool/LLM?:** Agent determines if it needs to use an external tool (like a search engine) or an LLM call to complete its current step.
+*   **Executing Tool/LLM:** Agent interacts with an external tool or makes an LLM call.
+*   **Generating Output:** Agent synthesizes information and prepares its final output for the task.
+*   **Task Completed:** Agent successfully finishes the task and its output is available.
+*   **Error/Failure:** An error occurred during processing or tool execution, leading to task failure.
+
+### 8.2. Crew Execution Flow (High-Level)
+
+A conceptual state diagram for the overall crew's execution:
+
+```mermaid
+graph TD
+    A[Start Crew] --> B{Next Task Available?};
+    B -- Yes --> C[Assign Task to Agent];
+    C --> D[Agent Executes Task];
+    D --> E{Task Successful?};
+    E -- Yes --> B;
+    E -- No --> F[Handle Task Failure];
+    F --> G[End Crew (with Failure)];
+    B -- No --> H[All Tasks Completed];
+    H --> I[End Crew (Success)];
+```
+
+*   **Start Crew:** The CrewAI system is initialized and begins execution.
+*   **Next Task Available?:** The orchestrator checks if there are pending tasks.
+*   **Assign Task to Agent:** A task is assigned to the appropriate agent based on its role and dependencies.
+*   **Agent Executes Task:** The assigned agent processes the task (as per its own lifecycle).
+*   **Task Successful?:** The orchestrator checks the outcome of the agent's task.
+*   **Handle Task Failure:** If a task fails, the crew's error handling mechanism is triggered.
+*   **End Crew (with Failure):** The crew terminates due to an unrecoverable task failure.
+*   **All Tasks Completed:** All defined tasks have been successfully executed.
+*   **End Crew (Success):** The crew successfully completes all its objectives.
