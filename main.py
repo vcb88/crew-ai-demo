@@ -10,7 +10,7 @@ from dotenv import load_dotenv # New import
 load_dotenv() # Load environment variables from .env file
 
 # Explicitly set OPENAI_API_KEY for litellm/openai client
-os.environ["OPENAI_API_KEY"] = "sk-no-key-required"
+os.environ["OPENAI_API_KEY"] = ""
 
 if __name__ == "__main__":
     print("Starting Personal Assistant CrewAI project...")
@@ -19,7 +19,7 @@ if __name__ == "__main__":
     local_llm = ChatOpenAI(
         model="local-model",
         base_url="http://192.168.1.14:1234/v1",
-        api_key="sk-no-key-required"
+        api_key=""
     )
 
     # Assign tools to memory_agent
