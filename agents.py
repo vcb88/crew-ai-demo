@@ -44,3 +44,13 @@ health_wellness_coach_agent = Agent(
     verbose=True,
     allow_delegation=False
 )
+
+# New Memory Agent
+memory_agent = Agent(
+    role='Memory Manager',
+    goal="""Efficiently store and retrieve relevant information to provide context and enable long-term learning for the personal assistant system.""",
+    backstory="""You are the central memory unit of the personal assistant, meticulously indexing and retrieving information to ensure seamless continuity and enhanced intelligence across all interactions.""",
+    verbose=True,
+    allow_delegation=False,
+    tools=[] # Tools will be added in main.py
+)
