@@ -186,15 +186,15 @@ A conceptual state diagram for the overall crew's execution:
 
 ```mermaid
 graph TD
-    A[Start Crew] --> B{Next Task Available?};
-    B -- Yes --> C[Assign Task to Agent];
-    C --> D[Agent Executes Task];
-    D --> E{Task Successful?};
-    E -- Yes --> B;
-    E -- No --> F[Handle Task Failure];
-    F --> G[End Crew (with Failure)];
-    B -- No --> H[All Tasks Completed];
-    H --> I[End Crew (Success)];
+    A[Start Crew] --> B{Next Task Available?}
+    B -- Yes --> C[Assign Task to Agent]
+    C --> D[Agent Executes Task]
+    D --> E{Task Successful?}
+    E -- Yes --> B
+    E -- No --> F[Handle Task Failure]
+    F --> G[End Crew (with Failure)]
+    B -- No --> H[All Tasks Completed]
+    H --> I[End Crew (Success)]
 ```
 
 *   **Start Crew:** The CrewAI system is initialized and begins execution.
