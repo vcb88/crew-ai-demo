@@ -96,4 +96,19 @@ Refer to `SPECIFICATION.md` for a detailed overview of the system's architecture
 
 See `ROADMAP.md` for a detailed roadmap of future features, including effort and impact estimations.
 
+## Demonstration Results
+
+The project successfully executed the "Investment Planning" scenario, demonstrating the collaborative intelligence of the multi-agent system and the effective integration of the Hybrid Memory Agent with a local LLM.
+
+**Key steps demonstrated:**
+*   **Deep Research Specialist** successfully researched AI stocks.
+*   **Memory Manager** successfully stored and retrieved research findings, explanations, financial advice, and schedules in the ChromaDB vector database.
+*   **Personal Tutor** provided explanations based on research.
+*   **Financial Advisor** offered financial advice.
+*   **Planner** generated a learning schedule.
+*   All agents communicated effectively by passing task outputs as context.
+*   The system successfully utilized a local LLM (LM Studio) for agent reasoning.
+
+This confirms the core functionality and inter-agent communication mechanisms are working as designed.
+
 ---
